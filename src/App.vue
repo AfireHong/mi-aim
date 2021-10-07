@@ -1,5 +1,10 @@
 <template>
-  <div>hello world</div>
+  <router-view></router-view>
 </template>
 
-<style></style>
+<style lang="scss">
+* {
+  padding: 0;
+  margin: 0;
+}
+</style>
