@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <a-row :gutter="16" :wrap="true">
+    <a-row :gutter="[22, 22]" :wrap="true">
       <a-col :xs="24" :md="8">
         <div class="info">
           <HomeCard title="我的信息">
@@ -50,16 +50,52 @@
         </div>
       </a-col>
     </a-row>
+    <a-row :gutter="[22, 22]" :wrap="true">
+      <a-col :xs="24" :md="24">
+        <div class="evaluate">
+          <HomeCard title="我的评价">
+            <div class="card-content" style="height: 500px">
+              <div class="evaluate-overview">
+                <div class="stars-box">
+                  <span class="stars-list">
+                    <StarFilled /><StarFilled /><StarFilled /><StarFilled /><StarOutlined />
+                  </span>
+                  <span class="stars-score">
+                    {{ evaluateInfo.star }}
+                  </span>
+                </div>
+                <div class="score">
+                  <span v-for="item in evaluateInfo.scoreList" :key="item.type">
+                    {{ item.type }} {{ item.score }}
+                  </span>
+                </div>
+                <div class="tag">
+                  <EvaluateTags :tags="evaluateInfo.tagList"></EvaluateTags>
+                </div>
+              </div>
+              <CommentList :comments="evaluateInfo.commentList"></CommentList>
+            </div>
+          </HomeCard>
+        </div>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
 import HomeCard from "./components/HomeCard.vue";
+import EvaluateTags from "./components/EvaluateTags.vue";
+import CommentList from "./components/CommentList.vue";
 import { Pie, Radar } from "@antv/g2plot";
 import { ref, onMounted } from "vue";
+import { StarOutlined, StarFilled } from "@ant-design/icons-vue";
 export default {
   name: "Home",
   components: {
     HomeCard,
+    StarOutlined,
+    StarFilled,
+    EvaluateTags,
+    CommentList,
   },
   setup() {
     const myInfo = ref({
@@ -86,6 +122,59 @@ export default {
       { name: "职业道德", star: 660 },
       { name: "团队合作", star: 885 },
     ];
+
+    const evaluateInfo = {
+      star: 4,
+      scoreList: [
+        { type: "工作能力", score: 4.6 },
+        { type: "应急处理", score: 4.1 },
+        { type: "创新意识", score: 4.6 },
+        { type: "职业道德", score: 4.6 },
+        { type: "团队合作", score: 4.6 },
+        { type: "工作态度", score: 4.6 },
+      ],
+      tagList: [
+        { id: 0, type: "全部", nums: 90 },
+        { id: 1, type: "负责", nums: 61 },
+        { id: 2, type: "工作完成效率高", nums: 61 },
+        { id: 3, type: "有工作能力", nums: 29 },
+      ],
+      commentList: [
+        {
+          id: 0,
+          name: "黄优乐",
+          position: "HR",
+          content: "能够逻辑清晰表达己方诉求，交流很高效。",
+          time: "2014年8月18日 16:05",
+          from: "杭州达创公司",
+          score: "4.8",
+          avater:
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
+        },
+        {
+          id: 1,
+          name: "江明明",
+          position: "技术部部部门主管",
+          content: "认真负责且有热情，是一个十分有想法的人！( •̀ ω •́ )y",
+          time: "2012年7月21日 17:05",
+          from: "杭州宏恒公司",
+          score: "4.8",
+          avater:
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
+        },
+        {
+          id: 2,
+          name: "廖柏柏",
+          position: "人力资源部部门主管",
+          content: "能够逻辑清晰表达己方诉求，交流很高效。",
+          time: "2012年5月13日 10:05",
+          from: "杭州和海公司",
+          score: "4.8",
+          avater:
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
+        },
+      ],
+    };
     onMounted(() => {
       const piePlot = new Pie("attendance", {
         appendPadding: 10,
@@ -191,6 +280,7 @@ export default {
     });
     return {
       myInfo,
+      evaluateInfo,
     };
   },
 };
@@ -198,8 +288,8 @@ export default {
 <style lang="scss">
 .home {
   width: 100%;
-  height: 100%;
-  padding: 24px;
+  padding: 18px 8px;
+  overflow: hidden;
 }
 .attendance {
   background: red;
@@ -220,6 +310,32 @@ export default {
     color: rgb(105, 105, 105);
     span {
       margin-right: 20px;
+    }
+  }
+}
+.evaluate {
+  margin-top: 20px;
+  .evaluate-overview {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    .stars-list {
+      font-size: 24px;
+      span {
+        margin-right: 5px;
+        color: rgb(255, 196, 0);
+      }
+    }
+    .stars-score {
+      font-size: 24px;
+      margin-left: 10px;
+      color: rgb(131, 131, 131);
+    }
+    .score {
+      display: grid;
+      grid-template-columns: 100px 100px 100px;
+      grid-template-rows: 30px 30px;
+      font-weight: bold;
     }
   }
 }

@@ -62,10 +62,15 @@
           <ExportOutlined />
         </div>
       </a-layout-header>
-      <a-layout-content :style="{ margin: '24px 16px 0' }">
+      <a-layout-content
+        :style="{
+          margin: '24px 16px 0',
+          height: 'calc(100vh - 158px)',
+          overflowY: 'scroll',
+        }"
+      >
         <div
           :style="{
-            minHeight: '360px',
             overflow: 'hidden',
           }"
         >
@@ -76,7 +81,11 @@
           </router-view>
         </div>
       </a-layout-content>
-      <a-layout-footer style="text-align: center"> copyright </a-layout-footer>
+      <a-layout-footer
+        style="text-align: center; background: #fff; border-top: 1px solid #eee"
+      >
+        copyright
+      </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
