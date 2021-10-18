@@ -51,7 +51,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .comment-container {
   height: 340px;
   margin-top: 10px;

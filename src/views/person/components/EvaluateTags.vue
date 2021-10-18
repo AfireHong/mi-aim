@@ -13,7 +13,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .tag-item {
   font-size: 13px;
   font-weight: 600;

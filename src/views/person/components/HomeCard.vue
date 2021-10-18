@@ -19,7 +19,7 @@ export default {
   setup() {},
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .box {
   width: 100%;
   overflow: hidden;
