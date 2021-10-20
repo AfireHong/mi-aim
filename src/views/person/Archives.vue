@@ -108,15 +108,14 @@
                 <a-col>
                   <a-card title="重大事件" style="width: 300px">
                     <a-timeline>
-                      <a-timeline-item
-                        >Create a services site 2015-09-01</a-timeline-item
+                      <a-timeline-item>
+                        获得公司“最佳员工”表彰 2015-09-01</a-timeline-item
+                      >
+                      <a-timeline-item>
+                        成为部门主管 2015-09-01</a-timeline-item
                       >
                       <a-timeline-item
-                        >Solve initial network problems
-                        2015-09-01</a-timeline-item
-                      >
-                      <a-timeline-item
-                        >Technical testing 2015-09-01</a-timeline-item
+                        >获得部门十佳员工称号 2015-09-01</a-timeline-item
                       >
                       <a-timeline-item
                         >Network problems being solved
@@ -126,26 +125,58 @@
                   </a-card>
                 </a-col>
                 <a-col>
-                  <a-card title="项目经历" style="width: 300px">
-                    <p>card content</p>
-                    <p>card content</p>
-                    <p>card content</p>
+                  <a-card
+                    title="项目经历"
+                    style="width: 300px; max-height: 300px; overflow-y: scroll"
+                  >
+                    <a-list item-layout="horizontal" :data-source="projectData">
+                      <template #renderItem="{ item }">
+                        <a-list-item>
+                          <a-list-item-meta :description="item.desc">
+                            <template #title>
+                              {{ item.title }}
+                            </template>
+                            <template #avatar>
+                              <a-avatar
+                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                              />
+                            </template>
+                          </a-list-item-meta>
+                        </a-list-item>
+                      </template>
+                    </a-list>
                   </a-card>
                 </a-col>
               </a-row>
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="4" tab="评价">评价</a-tab-pane>
+        <a-tab-pane key="4" tab="评价">
+          <div class="evaluate-container">
+            <div class="eva-tag-comment">
+              <div class="tag">
+                <EvaluateTags :tags="evaluateInfo.tagList"></EvaluateTags>
+              </div>
+              <CommentList :comments="evaluateInfo.commentList"></CommentList>
+            </div>
+
+            <div id="ability" style="width: 23%; height: 23%"></div>
+          </div>
+        </a-tab-pane>
       </a-tabs>
     </div>
   </div>
 </template>
 <script>
-import { ref } from "vue";
-import { nextTick } from "vue";
-import { Pie } from "@antv/g2plot";
+import { nextTick, ref } from "vue";
+import { Pie, Radar } from "@antv/g2plot";
+import EvaluateTags from "./components/EvaluateTags.vue";
+import CommentList from "./components/CommentList.vue";
 export default {
+  components: {
+    EvaluateTags,
+    CommentList,
+  },
   setup() {
     const onChange = () => {};
     const onOpenChange = () => {};
@@ -219,6 +250,53 @@ export default {
           });
           piePlot.render();
         });
+      } else if (key == 4) {
+        nextTick(() => {
+          const radarPlot = new Radar("ability", {
+            data: radarData,
+            xField: "name",
+            yField: "star",
+            appendPadding: [0, 10, 0, 10],
+            meta: {
+              star: {
+                alias: "star 数量",
+                min: 0,
+                nice: true,
+                formatter: (v) => Number(v).toFixed(2),
+              },
+            },
+            xAxis: {
+              line: null,
+              tickLine: null,
+              grid: {
+                line: {
+                  style: {
+                    lineDash: null,
+                  },
+                },
+              },
+            },
+            yAxis: {
+              line: null,
+              tickLine: null,
+              grid: {
+                line: {
+                  type: "line",
+                  style: {
+                    lineDash: null,
+                  },
+                },
+                alternateColor: "rgba(0, 0, 0, 0.04)",
+              },
+            },
+            // 开启辅助点
+            point: {
+              size: 2,
+            },
+            area: {},
+          });
+          radarPlot.render();
+        });
       }
     };
     const columns = [
@@ -243,6 +321,81 @@ export default {
         key: "end",
       },
     ];
+    const projectData = [
+      { title: "网上银行app项目", desc: "领导负责技术部工作" },
+      {
+        title: "开放式世界游戏项目",
+        desc: "领导负责游戏后端开发",
+      },
+      {
+        title: "共享单车项目",
+        desc: "领导负责游戏后端开发",
+      },
+      {
+        title: "扫雷小游戏",
+        desc: "领导负责游戏后端开发",
+      },
+    ];
+    const evaluateInfo = {
+      star: 4,
+      scoreList: [
+        { type: "工作能力", score: 4.6 },
+        { type: "应急处理", score: 4.1 },
+        { type: "创新意识", score: 4.6 },
+        { type: "职业道德", score: 4.6 },
+        { type: "团队合作", score: 4.6 },
+        { type: "工作态度", score: 4.6 },
+      ],
+      tagList: [
+        { id: 0, type: "全部", nums: 90 },
+        { id: 1, type: "负责", nums: 61 },
+        { id: 2, type: "工作完成效率高", nums: 61 },
+        { id: 3, type: "有工作能力", nums: 29 },
+      ],
+      commentList: [
+        {
+          id: 0,
+          name: "黄优乐",
+          position: "HR",
+          content: "能够逻辑清晰表达己方诉求，交流很高效。",
+          time: "2014年8月18日 16:05",
+          from: "杭州达创公司",
+          score: "4.8",
+          avater:
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
+        },
+        {
+          id: 1,
+          name: "江明明",
+          position: "技术部部部门主管",
+          content: "认真负责且有热情，是一个十分有想法的人！( •̀ ω •́ )y",
+          time: "2012年7月21日 17:05",
+          from: "杭州宏恒公司",
+          score: "4.8",
+          avater:
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
+        },
+        {
+          id: 2,
+          name: "廖柏柏",
+          position: "人力资源部部门主管",
+          content: "能够逻辑清晰表达己方诉求，交流很高效。",
+          time: "2012年5月13日 10:05",
+          from: "杭州和海公司",
+          score: "4.8",
+          avater:
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
+        },
+      ],
+    };
+    const radarData = [
+      { name: "工作能力", star: 671 },
+      { name: "应急处理", star: 780 },
+      { name: "工作态度", star: 814 },
+      { name: "创新意识", star: 840 },
+      { name: "职业道德", star: 660 },
+      { name: "团队合作", star: 885 },
+    ];
     return {
       tabKey: ref("1"),
       activeKey: ref("1"),
@@ -252,6 +405,8 @@ export default {
       onCalendarChange,
       tabChannge,
       columns,
+      projectData,
+      evaluateInfo,
     };
   },
 };
@@ -313,6 +468,13 @@ $font-color: #6c6f71;
     .archives-detail {
       margin-top: 20px;
     }
+  }
+  .evaluate-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .eva-tag-comment {
+    width: 75%;
   }
 }
 </style>
