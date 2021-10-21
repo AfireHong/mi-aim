@@ -16,6 +16,16 @@ const routes = [
         name: "archives",
         component: () => import("../views/person/Archives.vue"),
       },
+      {
+        path: "/person/editArchives",
+        name: "editArchives",
+        component: () => import("../views/person/ArchivesEdit.vue"),
+      },
+      {
+        path: "/person/staffArchives",
+        name: "staffArchives",
+        component: () => import("../views/person/StaffArchives.vue"),
+      },
     ],
   },
   {
