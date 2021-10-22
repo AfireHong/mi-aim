@@ -14,7 +14,7 @@ const routes = [
       {
         path: "/person/myArchives",
         name: "archives",
-        component: () => import("../views/person/Archives.vue"),
+        component: () => import("../views/person/MyArchives.vue"),
       },
       {
         path: "/person/editArchives",

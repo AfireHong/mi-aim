@@ -14,7 +14,13 @@
           :rowKey="(record) => record.id"
         >
           <template #operation>
-            <a-button type="primary" size="small"> 离职</a-button>
+            <a-popconfirm
+              v-if="departmentData.length"
+              title="确定要给该员工办理离职？"
+              @confirm="onDelete(record.id)"
+            >
+              <a-button type="primary" size="small"> 离职</a-button>
+            </a-popconfirm>
           </template>
         </a-table>
       </a-tab-pane>
@@ -26,7 +32,13 @@
         </div>
         <a-table :dataSource="departmentData" :columns="columns">
           <template #operation>
-            <a-button type="primary" size="small"> 离职</a-button>
+            <a-popconfirm
+              v-if="departmentData.length"
+              title="确定要给该员工办理离职？"
+              @confirm="onDelete(record.id)"
+            >
+              <a-button type="primary" size="small"> 离职</a-button>
+            </a-popconfirm>
           </template>
         </a-table>
       </a-tab-pane>
@@ -82,10 +94,12 @@ export default {
         slots: { customRender: "operation" },
       },
     ];
+    const onDelete = () => {};
     return {
       activeKey: ref("1"),
       departmentData,
       columns,
+      onDelete,
     };
   },
 };

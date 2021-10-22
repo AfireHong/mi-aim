@@ -2,7 +2,7 @@
   <div class="archives-container">
     <div class="archives-header">
       <div class="icon">
-        <img src="../../assets/images/a2.jpg" alt="" />
+        <img src="../../../assets/images/a2.jpg" alt="" />
       </div>
       <div class="user-name">唐慧君</div>
     </div>
@@ -12,7 +12,7 @@
           <div class="person-info-content">
             <img
               class="person-img"
-              src="../../assets/images/photo.jpg"
+              src="../../../assets/images/photo.jpg"
               alt=""
             />
             <a-descriptions title="我的信息">
@@ -170,8 +170,8 @@
 <script>
 import { nextTick, ref } from "vue";
 import { Pie, Radar } from "@antv/g2plot";
-import EvaluateTags from "./components/EvaluateTags.vue";
-import CommentList from "./components/CommentList.vue";
+import EvaluateTags from "./EvaluateTags.vue";
+import CommentList from "./CommentList.vue";
 export default {
   components: {
     EvaluateTags,
