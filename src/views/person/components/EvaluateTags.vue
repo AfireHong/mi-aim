@@ -1,6 +1,8 @@
 <template>
-  <div v-for="item in tags" :key="item.id" class="tag-item">
-    {{ item.type }}
+  <div class="tag-group">
+    <div v-for="item in tags" :key="item.id" class="tag-item">
+      {{ item.type }}
+    </div>
   </div>
 </template>
 <script>
@@ -14,6 +16,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.tag-group {
+  overflow: hidden;
+}
 .tag-item {
   font-size: 13px;
   font-weight: 600;

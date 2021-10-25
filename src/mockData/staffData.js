@@ -1,4 +1,4 @@
-export let departmentData = {
+export const departmentData = {
   code: 0,
   msg: "成功",
   data: {

@@ -26,6 +26,26 @@ const routes = [
         name: "staffArchives",
         component: () => import("../views/person/StaffArchives.vue"),
       },
+      {
+        path: "/person/setting",
+        name: "Setting",
+        component: () => import("../views/person/Setting.vue"),
+      },
+      {
+        path: "/person/message",
+        name: "Message",
+        component: () => import("../views/person/Message.vue"),
+      },
+      {
+        path: "/person/backTone",
+        name: "backTone",
+        component: () => import("../views/person/backTone.vue"),
+      },
+      {
+        path: "/person/pushArchives",
+        name: "pushArchives",
+        component: () => import("../views/person/pushArchives.vue"),
+      },
     ],
   },
   {

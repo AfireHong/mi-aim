@@ -57,7 +57,7 @@
             </a-collapse-panel>
           </a-collapse>
         </a-tab-pane>
-        <a-tab-pane key="3" tab="在职工作档案">
+        <a-tab-pane key="3" tab="在职工作档案" :forceRender="true">
           <div class="archives-overview">
             <div class="over-item">
               <span class="over-title">部门</span>
@@ -101,7 +101,7 @@
                     <a-table
                       :dataSource="dataSource"
                       :columns="columns"
-                      :size="small"
+                      size="small"
                     />
                   </a-card>
                 </a-col>
@@ -151,7 +151,7 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="4" tab="评价">
+        <a-tab-pane key="4" tab="评价" :forceRender="true">
           <div class="evaluate-container">
             <div class="eva-tag-comment">
               <div class="tag">
@@ -160,7 +160,7 @@
               <CommentList :comments="evaluateInfo.commentList"></CommentList>
             </div>
 
-            <div id="ability" style="width: 23%; height: 23%"></div>
+            <div id="ability" style="width: 23%; height: 300px"></div>
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -168,7 +168,7 @@
   </div>
 </template>
 <script>
-import { nextTick, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { Pie, Radar } from "@antv/g2plot";
 import EvaluateTags from "./EvaluateTags.vue";
 import CommentList from "./CommentList.vue";
@@ -189,115 +189,126 @@ export default {
       { type: "出差", value: 10 },
       { type: "请假", value: 5 },
     ];
-    const tabChannge = (key) => {
-      if (key == 3) {
-        console.log(111);
-        nextTick(() => {
-          const piePlot = new Pie("attendance", {
-            appendPadding: 10,
-            data: pieData,
-            angleField: "value",
-            colorField: "type",
-            radius: 1,
-            innerRadius: 0.64,
-            label: {
-              type: "inner",
-              offset: "-50%",
-              autoRotate: false,
-              style: { textAlign: "center" },
-              formatter: ({ percent }) => `${(percent * 100).toFixed(0)}%`,
+    const dataSource = [
+      {
+        order: "1",
+        work: "89",
+        start: "2020-9",
+        end: "2021-9",
+      },
+    ];
+    onMounted(() => {
+      nextTick(() => {
+        console.log(document.getElementById("attendance"));
+        const piePlot = new Pie("attendance", {
+          appendPadding: 10,
+          data: pieData,
+          angleField: "value",
+          colorField: "type",
+          radius: 1,
+          innerRadius: 0.64,
+          label: {
+            type: "inner",
+            offset: "-50%",
+            autoRotate: false,
+            style: { textAlign: "center" },
+            formatter: ({ percent }) => `${(percent * 100).toFixed(0)}%`,
+          },
+          statistic: {
+            title: {
+              offsetY: -8,
+              content: "",
             },
-            statistic: {
-              title: {
-                offsetY: -8,
-                content: "",
-              },
-              content: {
-                offsetY: -4,
-                content: "",
-              },
+            content: {
+              offsetY: -4,
+              content: "",
             },
-            // 添加 中心统计文本 交互
-            interactions: [
-              { type: "element-selected" },
-              { type: "element-active" },
-              {
-                type: "pie-statistic-active",
-                cfg: {
-                  start: [
-                    {
-                      trigger: "element:mouseenter",
-                      action: "pie-statistic:change",
-                    },
-                    {
-                      trigger: "legend-item:mouseenter",
-                      action: "pie-statistic:change",
-                    },
-                  ],
-                  end: [
-                    {
-                      trigger: "element:mouseleave",
-                      action: "pie-statistic:reset",
-                    },
-                    {
-                      trigger: "legend-item:mouseleave",
-                      action: "pie-statistic:reset",
-                    },
-                  ],
-                },
-              },
-            ],
-          });
-          piePlot.render();
-        });
-      } else if (key == 4) {
-        nextTick(() => {
-          const radarPlot = new Radar("ability", {
-            data: radarData,
-            xField: "name",
-            yField: "star",
-            appendPadding: [0, 10, 0, 10],
-            meta: {
-              star: {
-                alias: "star 数量",
-                min: 0,
-                nice: true,
-                formatter: (v) => Number(v).toFixed(2),
-              },
-            },
-            xAxis: {
-              line: null,
-              tickLine: null,
-              grid: {
-                line: {
-                  style: {
-                    lineDash: null,
+          },
+          // 添加 中心统计文本 交互
+          interactions: [
+            { type: "element-selected" },
+            { type: "element-active" },
+            {
+              type: "pie-statistic-active",
+              cfg: {
+                start: [
+                  {
+                    trigger: "element:mouseenter",
+                    action: "pie-statistic:change",
                   },
-                },
-              },
-            },
-            yAxis: {
-              line: null,
-              tickLine: null,
-              grid: {
-                line: {
-                  type: "line",
-                  style: {
-                    lineDash: null,
+                  {
+                    trigger: "legend-item:mouseenter",
+                    action: "pie-statistic:change",
                   },
-                },
-                alternateColor: "rgba(0, 0, 0, 0.04)",
+                ],
+                end: [
+                  {
+                    trigger: "element:mouseleave",
+                    action: "pie-statistic:reset",
+                  },
+                  {
+                    trigger: "legend-item:mouseleave",
+                    action: "pie-statistic:reset",
+                  },
+                ],
               },
             },
-            // 开启辅助点
-            point: {
-              size: 2,
-            },
-            area: {},
-          });
-          radarPlot.render();
+          ],
         });
-      }
+        piePlot.render();
+        const radarPlot = new Radar("ability", {
+          data: radarData,
+          xField: "name",
+          yField: "star",
+          appendPadding: [0, 10, 0, 10],
+          meta: {
+            star: {
+              alias: "star 数量",
+              min: 0,
+              nice: true,
+              formatter: (v) => Number(v).toFixed(2),
+            },
+          },
+          xAxis: {
+            line: null,
+            tickLine: null,
+            grid: {
+              line: {
+                style: {
+                  lineDash: null,
+                },
+              },
+            },
+          },
+          yAxis: {
+            line: null,
+            tickLine: null,
+            grid: {
+              line: {
+                type: "line",
+                style: {
+                  lineDash: null,
+                },
+              },
+              alternateColor: "rgba(0, 0, 0, 0.04)",
+            },
+          },
+          // 开启辅助点
+          point: {
+            size: 2,
+          },
+          area: {},
+        });
+        radarPlot.render();
+      });
+    });
+    const tabChannge = () => {
+      // if (key == 3) {
+      //   console.log(111);
+      //   nextTick(() => {});
+      // } else if (key == 4) {
+      //   nextTick(() => {});
+      // }
     };
     const columns = [
       {
@@ -399,7 +410,7 @@ export default {
     return {
       tabKey: ref("1"),
       activeKey: ref("1"),
-      time: ref(""),
+      time: ref([]),
       onChange,
       onOpenChange,
       onCalendarChange,
@@ -407,6 +418,7 @@ export default {
       columns,
       projectData,
       evaluateInfo,
+      dataSource,
     };
   },
 };
