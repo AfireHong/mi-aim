@@ -35,6 +35,10 @@
           <span v-if="record.status === 1" class="pass-status">通过</span>
           <span v-if="record.status === 2" class="reject-status">拒绝</span>
         </template>
+        <template #sex="{ record }">
+          <span v-if="record.sex == 1">男</span>
+          <span v-else>女</span>
+        </template>
       </a-table>
     </div>
   </div>
@@ -123,6 +127,7 @@ export default {
         title: "性别",
         dataIndex: "sex",
         key: "sex",
+        slots: { customRender: "sex" },
       },
       {
         title: "手机",
