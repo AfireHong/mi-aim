@@ -4,43 +4,60 @@
     <a-tabs type="card" v-model:activeKey="activeKey">
       <a-tab-pane key="1" tab="本部门">
         <div class="search-box">
-          <a-input placeholder="输入姓名" /><a-button type="primary">
+          <a-input placeholder="输入姓名" /><a-button
+            type="primary"
+            @click="search"
+          >
             查找
           </a-button>
         </div>
-        <a-table
-          :dataSource="departmentData"
-          :columns="columns"
-          :rowKey="(record) => record.id"
-        >
-          <template #operation>
-            <a-popconfirm
-              v-if="departmentData.length"
-              title="确定要给该员工办理离职？"
-              @confirm="onDelete(record.id)"
-            >
-              <a-button type="primary" size="small"> 离职</a-button>
-            </a-popconfirm>
-          </template>
-        </a-table>
+        <div>
+          <a-spin :spinning="loading" />
+          <a-table
+            :dataSource="departmentData"
+            :columns="columns"
+            :rowKey="(record) => record.id"
+            v-if="!loading"
+          >
+            <template #operation>
+              <a-popconfirm
+                v-if="departmentData.length"
+                title="确定要给该员工办理离职？"
+                @confirm="onDelete(record.id)"
+              >
+                <a-button type="primary" size="small"> 离职</a-button>
+              </a-popconfirm>
+            </template>
+          </a-table>
+        </div>
       </a-tab-pane>
       <a-tab-pane key="2" tab="本公司"
         ><div class="search-box">
-          <a-input placeholder="输入姓名" /><a-button type="primary">
+          <a-input placeholder="输入姓名" /><a-button
+            type="primary"
+            @click="search"
+          >
             查找
           </a-button>
         </div>
-        <a-table :dataSource="departmentData" :columns="columns">
-          <template #operation>
-            <a-popconfirm
-              v-if="departmentData.length"
-              title="确定要给该员工办理离职？"
-              @confirm="onDelete(record.id)"
-            >
-              <a-button type="primary" size="small"> 离职</a-button>
-            </a-popconfirm>
-          </template>
-        </a-table>
+        <div>
+          <a-spin :spinning="loading" />
+          <a-table
+            :dataSource="departmentData"
+            :columns="columns"
+            v-if="!loading"
+          >
+            <template #operation>
+              <a-popconfirm
+                v-if="departmentData.length"
+                title="确定要给该员工办理离职？"
+                @confirm="onDelete(record.id)"
+              >
+                <a-button type="primary" size="small"> 离职</a-button>
+              </a-popconfirm>
+            </template>
+          </a-table>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -48,9 +65,11 @@
 <script>
 import { ref, onMounted } from "vue";
 import { getDepartmentData } from "../../api/personApi.js";
+import { message } from "ant-design-vue";
 export default {
   setup() {
     const departmentData = ref([]);
+    const loading = ref(false);
     const getDepatment = async () => {
       const res = await getDepartmentData();
       if (res.code === 0) {
@@ -95,11 +114,20 @@ export default {
       },
     ];
     const onDelete = () => {};
+    const search = () => {
+      loading.value = true;
+      setTimeout(() => {
+        loading.value = false;
+        message.success("查找成功！");
+      }, 500);
+    };
     return {
       activeKey: ref("1"),
       departmentData,
       columns,
       onDelete,
+      loading,
+      search,
     };
   },
 };

@@ -13,38 +13,53 @@
     </div>
     <div class="data-table">
       <div class="search-box">
-        <a-input placeholder="输入姓名" /><a-button type="primary">
+        <a-input placeholder="输入姓名" /><a-button
+          type="primary"
+          @click="search"
+        >
           查找
         </a-button>
       </div>
-      <a-table :dataSource="dataSource" :columns="columns">
-        <template #operation="{ record }">
-          <a-button v-if="record.status != 2" type="primary" size="small"
-            >入职</a-button
-          >
-          <a-button
-            v-if="record.status === 2"
-            type="primary"
-            size="small"
-            disabled
-            >入职</a-button
-          >
-        </template>
-        <template #status="{ record }">
-          <span v-if="record.status === 0">等待</span>
-          <span v-if="record.status === 1" class="pass-status">通过</span>
-          <span v-if="record.status === 2" class="reject-status">拒绝</span>
-        </template>
-        <template #sex="{ record }">
-          <span v-if="record.sex == 1">男</span>
-          <span v-else>女</span>
-        </template>
-      </a-table>
+      <a-spin tip="Loading..." :spinning="loading"
+        ><a-table :dataSource="dataSource" :columns="columns">
+          <template #operation="{ record }">
+            <a-popconfirm
+              title="确定入职？"
+              ok-text="是"
+              cancel-text="否"
+              @confirm="confirm"
+              @cancel="cancel"
+            >
+              <a-button v-if="record.status != 2" type="primary" size="small"
+                >入职</a-button
+              >
+            </a-popconfirm>
+            <a-button
+              v-if="record.status === 2"
+              type="primary"
+              size="small"
+              disabled
+              >入职</a-button
+            >
+          </template>
+          <template #status="{ record }">
+            <span v-if="record.status === 0">等待</span>
+            <span v-if="record.status === 1" class="pass-status">通过</span>
+            <span v-if="record.status === 2" class="reject-status">拒绝</span>
+          </template>
+          <template #sex="{ record }">
+            <span v-if="record.sex == 1">男</span>
+            <span v-else>女</span>
+          </template>
+        </a-table>
+      </a-spin>
     </div>
   </div>
 </template>
 <script>
 import { PlusOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
+import { ref } from "vue";
 export default {
   components: {
     PlusOutlined,
@@ -158,9 +173,22 @@ export default {
         slots: { customRender: "operation" },
       },
     ];
+    const loading = ref(false);
+    const search = () => {
+      loading.value = true;
+      setTimeout(() => {
+        loading.value = false;
+      }, 500);
+    };
+    const confirm = () => {
+      message.success("入职成功！");
+    };
     return {
       dataSource,
+      loading,
       columns,
+      search,
+      confirm,
     };
   },
 };
