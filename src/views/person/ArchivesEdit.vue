@@ -11,124 +11,131 @@
         tree-default-expand-all
       >
       </a-tree-select>
-      <a-button type="primary" size="small">切换</a-button>
+      <a-button type="primary" size="small" @click="switchStaff">切换</a-button>
     </div>
-    <a-tabs type="card" v-model:activeKey="activeKey">
-      <a-tab-pane key="1" tab="档案" :forceRender="true">
-        <div class="archive-detail">
-          <div class="archive-upload">
-            <a-card title="考勤统计上传" style="width: 400px; height: 150px">
-              <a-upload
-                v-model:file-list="fileList"
-                name="file"
-                :multiple="true"
-                @change="handleChange"
-              >
-                <a-button>
-                  <upload-outlined></upload-outlined>
-                  点击上传考勤统计
-                </a-button>
-              </a-upload>
-            </a-card>
-            <br />
-            <a-card title="绩效记录上传" style="width: 400px; height: 150px">
-              <a-upload
-                v-model:file-list="fileList"
-                name="file"
-                :multiple="true"
-                @change="handleChange"
-              >
-                <a-button>
-                  <upload-outlined></upload-outlined>
-                  点击上传绩效记录
-                </a-button>
-              </a-upload>
-            </a-card>
-          </div>
-          <div class="experience">
-            <a-tabs type="card" v-model:activeKey="expKey">
-              <a-tab-pane key="3" tab="重大事件">
-                <div class="experience-content">
-                  <a-timeline>
-                    <a-timeline-item>
-                      获得公司“最佳员工”表彰 2015-09-01</a-timeline-item
-                    >
-                    <a-timeline-item> 成为部门主管 2015-09-01</a-timeline-item>
-                    <a-timeline-item
-                      >获得部门十佳员工称号 2015-09-01</a-timeline-item
-                    >
-                    <a-timeline-item
-                      >Network problems being solved 2015-09-01</a-timeline-item
-                    >
-                  </a-timeline>
-                </div>
-              </a-tab-pane>
-              <a-tab-pane key="4" tab="项目经历">
-                <div class="experience-content">
-                  <a-list item-layout="horizontal" :data-source="projectData">
-                    <template #renderItem="{ item }">
-                      <a-list-item>
-                        <a-list-item-meta :description="item.desc">
-                          <template #title>
-                            {{ item.title }}
-                          </template>
-                          <template #avatar>
-                            <a-avatar
-                              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                            />
-                          </template>
-                        </a-list-item-meta>
-                      </a-list-item>
-                    </template>
-                  </a-list>
-                </div>
-              </a-tab-pane>
-            </a-tabs>
-            <a-range-picker v-model:value="time" />
-            <div class="title-input">
-              <a-input v-model:value="expTitle" />
-              <a-button type="primary">确定</a-button>
+    <a-spin tip="Loading..." :spinning="loading">
+      <a-tabs type="card" v-model:activeKey="activeKey">
+        <a-tab-pane key="1" tab="档案" :forceRender="true">
+          <div class="archive-detail">
+            <div class="archive-upload">
+              <a-card title="考勤统计上传" style="width: 400px; height: 150px">
+                <a-upload
+                  v-model:file-list="fileList"
+                  name="file"
+                  :multiple="true"
+                  @change="handleChange"
+                >
+                  <a-button>
+                    <upload-outlined></upload-outlined>
+                    点击上传考勤统计
+                  </a-button>
+                </a-upload>
+              </a-card>
+              <br />
+              <a-card title="绩效记录上传" style="width: 400px; height: 150px">
+                <a-upload
+                  v-model:file-list="fileList"
+                  name="file"
+                  :multiple="true"
+                  @change="handleChange"
+                >
+                  <a-button>
+                    <upload-outlined></upload-outlined>
+                    点击上传绩效记录
+                  </a-button>
+                </a-upload>
+              </a-card>
             </div>
-            <a-textarea
-              v-if="expKey === '4'"
-              v-model:value="expContent"
-              showCount
-              :maxlength="100"
-            />
+            <div class="experience">
+              <a-tabs type="card" v-model:activeKey="expKey">
+                <a-tab-pane key="3" tab="重大事件">
+                  <div class="experience-content">
+                    <a-timeline>
+                      <a-timeline-item>
+                        获得公司“最佳员工”表彰 2015-09-01</a-timeline-item
+                      >
+                      <a-timeline-item>
+                        成为部门主管 2015-09-01</a-timeline-item
+                      >
+                      <a-timeline-item
+                        >获得部门十佳员工称号 2015-09-01</a-timeline-item
+                      >
+                      <a-timeline-item
+                        >Network problems being solved
+                        2015-09-01</a-timeline-item
+                      >
+                    </a-timeline>
+                  </div>
+                </a-tab-pane>
+                <a-tab-pane key="4" tab="项目经历">
+                  <div class="experience-content">
+                    <a-list item-layout="horizontal" :data-source="projectData">
+                      <template #renderItem="{ item }">
+                        <a-list-item>
+                          <a-list-item-meta :description="item.desc">
+                            <template #title>
+                              {{ item.title }}
+                            </template>
+                            <template #avatar>
+                              <a-avatar
+                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                              />
+                            </template>
+                          </a-list-item-meta>
+                        </a-list-item>
+                      </template>
+                    </a-list>
+                  </div>
+                </a-tab-pane>
+              </a-tabs>
+              <a-range-picker v-model:value="time" />
+              <div class="title-input">
+                <a-input v-model:value="expTitle" />
+                <a-button type="primary">确定</a-button>
+              </div>
+              <a-textarea
+                v-if="expKey === '4'"
+                v-model:value="expContent"
+                showCount
+                :maxlength="100"
+              />
+            </div>
           </div>
-        </div>
-      </a-tab-pane>
-      <a-tab-pane key="2" tab="评价" :forceRender="true">
-        <div class="comment-detail">
-          <div class="comment-list">
-            <div class="filter-comment"><span>全部</span><span>我的</span></div>
-            <CommentList :comments="commentList"></CommentList>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="评价" :forceRender="true">
+          <div class="comment-detail">
+            <div class="comment-list">
+              <div class="filter-comment">
+                <span>全部</span><span>我的</span>
+              </div>
+              <CommentList :comments="commentList"></CommentList>
+            </div>
+            <div class="comment-radar">
+              <div id="ability"></div>
+              <EvaluateTags :tags="evaluateInfo.tagList"></EvaluateTags>
+            </div>
           </div>
-          <div class="comment-radar">
-            <div id="ability"></div>
-            <EvaluateTags :tags="evaluateInfo.tagList"></EvaluateTags>
+          <div class="cooment-submit-box">
+            <div class="input-area">
+              <a-textarea
+                v-model:value="commentText"
+                showCount
+                :maxlength="100"
+              />
+              <a-button type="primary">提交</a-button>
+            </div>
+            <div class="stars-area">
+              <div>工作能力: <StarsSelect></StarsSelect></div>
+              <div>工作态度: <StarsSelect></StarsSelect></div>
+              <div>团队合作: <StarsSelect></StarsSelect></div>
+              <div>职业道德: <StarsSelect></StarsSelect></div>
+              <div>创新意识: <StarsSelect></StarsSelect></div>
+              <div>应急处理: <StarsSelect></StarsSelect></div>
+            </div>
           </div>
-        </div>
-        <div class="cooment-submit-box">
-          <div class="input-area">
-            <a-textarea
-              v-model:value="commentText"
-              showCount
-              :maxlength="100"
-            />
-            <a-button type="primary">提交</a-button>
-          </div>
-          <div class="stars-area">
-            <div>工作能力: <StarsSelect></StarsSelect></div>
-            <div>工作态度: <StarsSelect></StarsSelect></div>
-            <div>团队合作: <StarsSelect></StarsSelect></div>
-            <div>职业道德: <StarsSelect></StarsSelect></div>
-            <div>创新意识: <StarsSelect></StarsSelect></div>
-            <div>应急处理: <StarsSelect></StarsSelect></div>
-          </div>
-        </div>
-      </a-tab-pane>
-    </a-tabs>
+        </a-tab-pane>
+      </a-tabs>
+    </a-spin>
   </div>
 </template>
 <script>
@@ -138,6 +145,7 @@ import CommentList from "./components/CommentList.vue";
 import { Radar } from "@antv/g2plot";
 import EvaluateTags from "./components/EvaluateTags.vue";
 import StarsSelect from "./components/StarsSelect.vue";
+import { message } from "ant-design-vue";
 const staffData = [
   {
     title: "技术部",
@@ -429,7 +437,17 @@ export default {
         radarPlot.render();
       });
     });
+    const loading = ref(false);
+    const switchStaff = () => {
+      loading.value = true;
+      setTimeout(() => {
+        loading.value = false;
+
+        message.success("切换成功！");
+      }, 500);
+    };
     return {
+      loading,
       activeKey,
       expKey: ref("3"),
       time: ref([]),
@@ -443,6 +461,7 @@ export default {
       commentList,
       evaluateInfo,
       commentText,
+      switchStaff,
     };
   },
 };

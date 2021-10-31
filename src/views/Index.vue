@@ -57,7 +57,7 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header :style="{ background: '#fff', padding: 0 }">
-        <div class="login-out-btn">
+        <div class="login-out-btn" @click="loginOut">
           退出
           <ExportOutlined />
         </div>
@@ -101,7 +101,7 @@ import {
   BellOutlined,
 } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 export default defineComponent({
   components: {
     UserOutlined,
@@ -125,11 +125,17 @@ export default defineComponent({
     const menuClick = ({ key }) => {
       router.push(key);
     };
+    const route = useRoute();
+    const selectedKeys = ref([route.path]);
+    const loginOut = () => {
+      router.push("/login");
+    };
     return {
-      selectedKeys: ref(["4"]),
+      selectedKeys,
       onCollapse,
       onBreakpoint,
       menuClick,
+      loginOut,
     };
   },
 });

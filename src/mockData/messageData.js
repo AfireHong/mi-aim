@@ -1,0 +1,57 @@
+export const messageData = {
+  code: 0,
+  msg: "成功",
+  data: {
+    list: [
+      {
+        id: "1",
+        send: "人才库",
+        type: "背调申请",
+        typeId: "1",
+        title: "来自杭州MiAim公司的黄优乐向您发起背调申请",
+        time: "昨天 10:20",
+      },
+      {
+        id: "2",
+        send: "陈杭英",
+        type: "评价申诉",
+        typeId: "2",
+        title: "敬爱的领导您好",
+        time: "昨天 10:20",
+      },
+      {
+        id: "3",
+        send: "人才库",
+        type: "背调申请",
+        typeId: "1",
+        title: "来自杭州MiAim公司的黄优乐向您发起背调申请",
+        time: "昨天 10:20",
+      },
+      {
+        id: "4",
+        send: "唐主管",
+        type: "普通",
+        typeId: "3",
+        title: "唐主管发布了本月评价",
+        time: "中午12:24",
+      },
+      {
+        id: "5",
+        send: "公司邮件",
+        type: "普通",
+        typeId: "3",
+        title: "您的部门新增一名员工",
+        time: "上午6:48",
+      },
+      {
+        id: "6",
+        send: "	唐主管",
+        type: "注意",
+        typeId: "4",
+        title: "您关于2021-3-21的评价申诉被驳回",
+        time: "上午10:57",
+      },
+    ],
+    size: 6,
+  },
+};
