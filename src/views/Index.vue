@@ -128,7 +128,7 @@ export default defineComponent({
     const route = useRoute();
     const selectedKeys = ref([route.path]);
     const loginOut = () => {
-      router.push("/login");
+      router.push("/enter");
     };
     return {
       selectedKeys,

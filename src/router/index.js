@@ -57,10 +57,11 @@ export const routes = [
       },
     ],
   },
+
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/Login.vue"),
+    path: "/Enter",
+    name: "Enter",
+    component: () => import("../views/Enter.vue"),
   },
 ];
 const router = createRouter({
