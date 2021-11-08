@@ -128,7 +128,7 @@ export default defineComponent({
     const route = useRoute();
     const selectedKeys = ref([route.path]);
     const loginOut = () => {
-      router.push("/login");
+      router.push("/enter");
     };
     return {
       selectedKeys,
@@ -180,6 +180,10 @@ export default defineComponent({
     color: #2f3045;
     cursor: pointer;
   }
+}
+.route-tab {
+  width: 100%;
+  height: 50px;
 }
 .scale-enter-active,
 .scale-leave-active {

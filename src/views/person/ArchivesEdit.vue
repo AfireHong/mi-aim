@@ -122,7 +122,7 @@
                 showCount
                 :maxlength="100"
               />
-              <a-button type="primary">提交</a-button>
+              <a-button type="primary" @click="submitEva">提交</a-button>
             </div>
             <div class="stars-area">
               <div>工作能力: <StarsSelect></StarsSelect></div>
@@ -275,7 +275,7 @@ export default {
     StarsSelect,
   },
   setup() {
-    const current = ref("");
+    const current = ref("0-0-1");
     const handleChange = () => {};
     const commentList = [
       {
@@ -446,6 +446,13 @@ export default {
         message.success("切换成功！");
       }, 500);
     };
+    const submitEva = () => {
+      loading.value = true;
+      setTimeout(() => {
+        message.success("提交成功！");
+        loading.value = false;
+      }, 500);
+    };
     return {
       loading,
       activeKey,
@@ -462,6 +469,7 @@ export default {
       evaluateInfo,
       commentText,
       switchStaff,
+      submitEva,
     };
   },
 };

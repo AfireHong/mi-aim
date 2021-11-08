@@ -19,13 +19,32 @@
             :rowKey="(record) => record.id"
             v-if="!loading"
           >
-            <template #operation>
+            <template #status="{ record }">
+              <span v-if="record.status === 0">在职</span>
+              <span v-if="record.status === 1">离职流程中</span>
+              <span v-if="record.status === 2">已离职</span>
+            </template>
+            <template #operation="{ record }">
               <a-popconfirm
                 v-if="departmentData.length"
                 title="确定要给该员工办理离职？"
                 @confirm="onDelete(record.id)"
               >
-                <a-button type="primary" size="small"> 离职</a-button>
+                <a-button
+                  v-if="record.status === 0"
+                  type="primary"
+                  size="small"
+                >
+                  发起离职</a-button
+                >
+                <a-button
+                  v-if="record.status === 1"
+                  type="primary"
+                  size="small"
+                  danger
+                >
+                  办理离职</a-button
+                >
               </a-popconfirm>
             </template>
           </a-table>
@@ -47,7 +66,12 @@
             :columns="columns"
             v-if="!loading"
           >
-            <template #operation>
+            <template #status="{ record }">
+              <span v-if="record.status === 0">在职</span>
+              <span v-if="record.status === 1">离职流程中</span>
+              <span v-if="record.status === 2">已离职</span>
+            </template>
+            <template #operation="{ record }">
               <a-popconfirm
                 v-if="departmentData.length"
                 title="确定要给该员工办理离职？"
@@ -106,6 +130,13 @@ export default {
         align: "center",
       },
       {
+        title: "状态",
+        dataIndex: "status",
+        key: "status",
+        align: "center",
+        slots: { customRender: "status" },
+      },
+      {
         title: "操作",
         key: "operation",
         align: "center",
@@ -113,7 +144,20 @@ export default {
         slots: { customRender: "operation" },
       },
     ];
-    const onDelete = () => {};
+    const onDelete = (id) => {
+      console.log(id);
+      console.log(departmentData.value);
+      departmentData.value.forEach((item) => {
+        if (item.id === id && item.status === 0) {
+          item.status = 1;
+          message.info("办理成功！");
+        } else if (item.id === id && item.status === 1) {
+          item.status = 2;
+          message.info("办理成功！");
+        }
+      });
+      console.log(departmentData.value);
+    };
     const search = () => {
       loading.value = true;
       setTimeout(() => {

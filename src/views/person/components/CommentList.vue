@@ -28,7 +28,7 @@
           ></StarOutlined>
         </span>
         <span class="comment-score-num">{{ item.score }}</span>
-        <span class="shensu-btn">申诉</span>
+        <span class="shensu-btn" @click="reportClick(item.id)">申诉</span>
       </div>
       <div class="comment-content">
         {{ item.content }}
@@ -48,6 +48,16 @@ export default {
   components: {
     StarOutlined,
     StarFilled,
+  },
+  emits: ["report"],
+  setup(props, { emit }) {
+    const reportClick = (id) => {
+      emit("report", id);
+    };
+    return {
+      reportClick,
+      props,
+    };
   },
 };
 </script>

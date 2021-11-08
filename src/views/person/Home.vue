@@ -73,12 +73,24 @@
                   <EvaluateTags :tags="evaluateInfo.tagList"></EvaluateTags>
                 </div>
               </div>
-              <CommentList :comments="evaluateInfo.commentList"></CommentList>
+              <CommentList
+                :comments="evaluateInfo.commentList"
+                @report="report"
+              ></CommentList>
             </div>
           </HomeCard>
         </div>
       </a-col>
     </a-row>
+
+    <a-modal
+      v-model:visible="visible"
+      title="评价申诉"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+    >
+      <a-input placeholder="输入申诉内容，将发送给直属上级" />
+    </a-modal>
   </div>
 </template>
 <script>
@@ -86,8 +98,9 @@ import HomeCard from "./components/HomeCard.vue";
 import EvaluateTags from "./components/EvaluateTags.vue";
 import CommentList from "./components/CommentList.vue";
 import { Pie, Radar } from "@antv/g2plot";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import { StarOutlined, StarFilled } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 export default {
   name: "Home",
   components: {
@@ -123,7 +136,7 @@ export default {
       { name: "团队合作", star: 885 },
     ];
 
-    const evaluateInfo = {
+    const evaluateInfo = reactive({
       star: 4,
       scoreList: [
         { type: "工作能力", score: 4.6 },
@@ -174,7 +187,7 @@ export default {
             "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F31%2F67%2F5810c4460e1ca_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637064952&t=b58bc1d8c0bd9379f252166a5c3b9f58",
         },
       ],
-    };
+    });
     onMounted(() => {
       const piePlot = new Pie("attendance", {
         appendPadding: 10,
@@ -278,9 +291,29 @@ export default {
       });
       radarPlot.render();
     });
+    const visible = ref(false);
+    const confirmLoading = ref(false);
+    const currentId = ref();
+    const report = (id) => {
+      visible.value = true;
+      currentId.value = id;
+      console.log(id);
+    };
+    const handleOk = () => {
+      confirmLoading.value = true;
+      setTimeout(() => {
+        visible.value = false;
+        confirmLoading.value = false;
+        message.success("申诉成功!");
+      }, 500);
+    };
     return {
       myInfo,
       evaluateInfo,
+      report,
+      visible,
+      handleOk,
+      confirmLoading,
     };
   },
 };
