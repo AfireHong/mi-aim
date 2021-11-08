@@ -181,6 +181,10 @@ export default defineComponent({
     cursor: pointer;
   }
 }
+.route-tab {
+  width: 100%;
+  height: 50px;
+}
 .scale-enter-active,
 .scale-leave-active {
   transition: all 0.5s ease;

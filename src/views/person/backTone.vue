@@ -3,7 +3,7 @@
     <div class="top">
       <div class="title">背调记录</div>
       <div class="btn">
-        <a-button type="primary" :size="size">
+        <a-button type="primary" :size="size" @click="backToneClick">
           <template #icon>
             <PlusOutlined />
           </template>
@@ -54,12 +54,153 @@
         </a-table>
       </a-spin>
     </div>
+    <a-modal
+      v-model:visible="visible"
+      title="发起背调"
+      :confirm-loading="confirmLoading"
+      cancelText="取消"
+      okText="发起"
+      @ok="handleOk"
+    >
+      <a-tree-select
+        v-model:value="current"
+        style="width: 200px; height: 30px"
+        :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+        :tree-data="staffData"
+        placeholder="请选择"
+        tree-default-expand-all
+      >
+      </a-tree-select>
+    </a-modal>
   </div>
 </template>
 <script>
 import { PlusOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
-import { ref } from "vue";
+import { ref, h } from "vue";
+import { SmileOutlined } from "@ant-design/icons-vue";
+import { notification } from "ant-design-vue";
+const staffData = [
+  {
+    title: "技术部",
+    value: "0",
+    key: "0",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "0-0-1",
+        key: "0-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "0-0-2",
+        key: "0-0-2",
+      },
+    ],
+  },
+  {
+    title: "市场部",
+    value: "0-1",
+    key: "1",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "1-0-1",
+        key: "1-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "1-0-2",
+        key: "1-0-2",
+      },
+    ],
+  },
+  {
+    title: "财务部",
+    value: "0-1",
+    key: "2",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "2-0-1",
+        key: "2-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "2-0-2",
+        key: "2-0-2",
+      },
+    ],
+  },
+  {
+    title: "行政部",
+    value: "0-1",
+    key: "3",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "3-0-1",
+        key: "3-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "3-0-2",
+        key: "3-0-2",
+      },
+    ],
+  },
+  {
+    title: "产品部",
+    value: "0-1",
+    key: "4",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "4-0-1",
+        key: "4-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "4-0-2",
+        key: "4-0-2",
+      },
+    ],
+  },
+  {
+    title: "运营部",
+    value: "0-1",
+    key: "5",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "5-0-1",
+        key: "5-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "5-0-2",
+        key: "5-0-2",
+      },
+    ],
+  },
+  {
+    title: "公关部",
+    value: "0-1",
+    key: "6",
+    children: [
+      {
+        title: "秦雨雪",
+        value: "6-0-1",
+        key: "6-0-1",
+      },
+      {
+        title: "林南珍",
+        value: "6-0-2",
+        key: "6-0-2",
+      },
+    ],
+  },
+];
 export default {
   components: {
     PlusOutlined,
@@ -183,12 +324,36 @@ export default {
     const confirm = () => {
       message.success("入职成功！");
     };
+    const visible = ref(false);
+    const backToneClick = () => {
+      visible.value = true;
+    };
+    const confirmLoading = ref(false);
+    const handleOk = () => {
+      confirmLoading.value = true;
+      setTimeout(() => {
+        visible.value = false;
+        confirmLoading.value = false;
+        notification.open({
+          message: "发起背调",
+          description: "发起成功！",
+          icon: h(SmileOutlined, { style: "color: #108ee9" }),
+        });
+      }, 1500);
+    };
     return {
       dataSource,
       loading,
       columns,
       search,
       confirm,
+      backToneClick,
+      visible,
+      staffData,
+      current: ref(""),
+      confirmLoading,
+      handleOk,
+      notification,
     };
   },
 };
